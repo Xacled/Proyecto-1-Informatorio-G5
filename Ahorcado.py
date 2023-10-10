@@ -1,18 +1,19 @@
 import random
-def menu():
+import os
+def menu():#Es un menu del juego
     print("Este es el juego de el ahorcado")
     print("----MENU----")
     print("1.Jugador contra la maquina") #Se toma la palabra de un archivo aleatorio
     print("2.Salir")
 
-
 def obtener_palabra():
+
+    #Hacer una lista de palabras, en caso tal de que no podamos usar archivo
     try:
         with open('Diccionario.txt', 'r') as archivo:
             palabras = archivo.readlines()
             # Elijo una palabra aleatoria del archivo
-            import random
-            palabra = random.choice(palabras).strip().lower()
+            palabra = random.choice(palabras).lower().strip()  
             return palabra
     except FileNotFoundError:
         print("El archivo 'diccionario.txt' no se encuentra.")
@@ -28,12 +29,12 @@ def juego():
 
     if op == 1:
         palabra = obtener_palabra()
-        if palabra is None:
-            return
+        # if palabra is None:
+        #     return
         vidas = 6
         adivinada = ''
-        letras_equivocada = set()
-        letras_ingresadas = set()
+        letras_equivocada = []
+        letras_ingresadas = []
 
         while vidas > 0:
             fallas = 0
@@ -42,13 +43,14 @@ def juego():
                 if letra in adivinada:
                     print(letra, end="")
                 else:
-                    print("*", end="")
+                    print("_", end="")
                     fallas += 1
 
             if fallas == 0:
                 print("\n¡Ganaste!")
                 break
             intento = input("\nIntroduce una letra o adivina la palabra completa (ingresa 'adivinar'): ").lower()
+
             if intento == 'adivinar':
                 palabra_intentada = input("Ingresa la palabra completa: ").lower()
                 
@@ -65,19 +67,20 @@ def juego():
             if letra_ingresada in letras_ingresadas:
                 print("Ya has ingresado esa letra. Intenta con una diferente.")
                 continue  # Vuelve al inicio del bucle sin restar vidas
-
-            letras_ingresadas.add(letra_ingresada)
-
+            
+            letras_ingresadas.append(letra_ingresada) 
             adivinada += letra_ingresada
+            
 
-            if letra_ingresada not in palabra:
+            if letra_ingresada not in palabra: 
                 vidas -= 1
-                letras_equivocada.add(letra_ingresada)
-                print(f"Letra incorrecta. Te quedan {vidas} vidas restantes.")
+                letras_equivocada.append(letra_ingresada)   
+                print(f"Letra incorrecta. Te quedan {vidas} vidas restantes.") 
 
             if vidas == 0:
                 print(f"Perdiste. La palabra era: {palabra}")
                 print(f"Letras incorrectas: {', '.join(letras_equivocada)}")
+
 
 juego()
 
