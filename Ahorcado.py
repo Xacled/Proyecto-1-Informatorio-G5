@@ -8,18 +8,7 @@ def menu():#Es un menu del juego
 
 def obtener_palabra():
 
-    #Hacer una lista de palabras, en caso tal de que no podamos usar archivo
-    # try:
-    #     with open('Diccionario.txt', 'r') as archivo:
-    #         palabras = archivo.readlines()
-    #         # Elijo una palabra aleatoria del archivo
-    #         palabra = random.choice(palabras).lower().strip()  
-    #         return palabra
-    # except FileNotFoundError:
-    #     print("El archivo 'diccionario.txt' no se encuentra.")
-    #     return None
-
-    palabras = ["hola", "adios", "Complacer", "Coma", "Espumoso", "Mamá", "Nuclear", "En cualquier lugar",
+    palabras = ["hola", "adios", "Complacer", "Coma", "Espumoso", "Mama", "Nuclear", "lugar",
                 "Pesca", "Implicar", "Optimista", "Cero", "Pezuñas", "Desvanecimiento", "Cobre", "Explicación",
                 "Retirar", "Zoom", "Innecesario", "Primer plano", "Desayuno", "Componer", "Problema", "Bovino",
                 "Arcilla", "Cualquier momento", "Seda", "Raro", "Grin", "Minuto", "Equivocado", "Probado",
@@ -37,8 +26,6 @@ def juego():
 
     if op == 1:
         palabra = obtener_palabra()
-        # if palabra is None:
-        #     return
         vidas = 6
         adivinada = ''
         letras_equivocada = []
@@ -52,11 +39,13 @@ def juego():
                     print(letra, end="")
                 else:
                     print("_", end="")
-                    fallas += 1
+                    fallas +=1
 
             if fallas == 0:
-                print("\n¡Ganaste!")
-                break
+                print("\n¡Ganaste! lograste adivinar la palabra")               
+                print(f"Letras incorrectas: {', '.join(letras_equivocada)}")
+                break 
+
             intento = input("\nIntroduce una letra o adivina la palabra completa (ingresa 'adivinar'): ").lower()
 
             if intento == 'adivinar':
@@ -79,15 +68,15 @@ def juego():
             letras_ingresadas.append(letra_ingresada) 
             adivinada += letra_ingresada
             
-
-            if letra_ingresada not in palabra: 
-                vidas -= 1
-                letras_equivocada.append(letra_ingresada)   
-                print(f"Letra incorrecta. Te quedan {vidas} vidas restantes.") 
-
             if vidas == 0:
                 print(f"Perdiste. La palabra era: {palabra}")
                 print(f"Letras incorrectas: {', '.join(letras_equivocada)}")
+
+                
+            if letra_ingresada not in palabra: 
+                    vidas -= 1
+                    letras_equivocada.append(letra_ingresada)   
+                    print(f"Letra incorrecta. Te quedan {vidas} vidas restantes.") 
 
 
 juego()
