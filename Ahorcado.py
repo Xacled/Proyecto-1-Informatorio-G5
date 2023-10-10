@@ -9,15 +9,23 @@ def menu():#Es un menu del juego
 def obtener_palabra():
 
     #Hacer una lista de palabras, en caso tal de que no podamos usar archivo
-    try:
-        with open('Diccionario.txt', 'r') as archivo:
-            palabras = archivo.readlines()
-            # Elijo una palabra aleatoria del archivo
-            palabra = random.choice(palabras).lower().strip()  
-            return palabra
-    except FileNotFoundError:
-        print("El archivo 'diccionario.txt' no se encuentra.")
-        return None
+    # try:
+    #     with open('Diccionario.txt', 'r') as archivo:
+    #         palabras = archivo.readlines()
+    #         # Elijo una palabra aleatoria del archivo
+    #         palabra = random.choice(palabras).lower().strip()  
+    #         return palabra
+    # except FileNotFoundError:
+    #     print("El archivo 'diccionario.txt' no se encuentra.")
+    #     return None
+
+    palabras = ["hola", "adios", "Complacer", "Coma", "Espumoso", "Mamá", "Nuclear", "En cualquier lugar",
+                "Pesca", "Implicar", "Optimista", "Cero", "Pezuñas", "Desvanecimiento", "Cobre", "Explicación",
+                "Retirar", "Zoom", "Innecesario", "Primer plano", "Desayuno", "Componer", "Problema", "Bovino",
+                "Arcilla", "Cualquier momento", "Seda", "Raro", "Grin", "Minuto", "Equivocado", "Probado",
+                "Diagonal", "Moneda", "Blanda", "Negro", "Estación", "Respaldar", "Lineal", "Examinador"]
+    palabra = random.choice(palabras).lower()
+    return palabra
 
 def ahorcado():
     pass
