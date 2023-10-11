@@ -84,7 +84,7 @@ def ahorcado(cantVida):
 def juego():
     os.system('cls') #Limpio la consola al iniciar el juego
     jugar = True
-    while jugar == True:
+    while jugar == True:#Primer control del flujo del programa mientras jugar sea true  podra seguir adivinando palabras
         print("------------Este es el juego de el ahorcado------------")
         menu()
         op = int(input("\nIngrese la opcion a elegir:\n-> "))
@@ -95,10 +95,10 @@ def juego():
         if op == 1:
             palabra = obtener_palabra()
             vidas = 6 #int(vida(palabra))
-            adivinada = ''
+            adivinada = '' #Letras por adivinar
             letras_equivocada = [] #Lista donde se guardaran las letras ingresadas y que son incorrectas      
             letras_repetidas = [] #Lista donde se guardaran las letras ingresadas repetidas
-            while vidas > 0:
+            while vidas > 0: #Segundo while controla el flujo del programa mientras las vidas > 0 seguira jugando
                
                 print(f"\nTienes {vidas} vidas")
                 ahorcado(vidas)
@@ -138,7 +138,7 @@ def juego():
                 
                 letrain = input("\nIntroduce una letra: ").lower()
 
-                if len(letrain) != 1 or not letrain.isalpha(): #.isalpha debuelve tru si los caracteres ingresado son letras
+                if len(letrain) != 1 or not letrain.isalpha(): #.isalpha debuelve true si los caracteres ingresado son letras
                     print('\nEl caracter ingresado no es una letra o es mas de una letra,Ingrese nuevamente una letra')
                     continue
                                
@@ -148,7 +148,7 @@ def juego():
                     print("\n ''⌐(ಠ۾ಠ)¬''' Ya has ingresado esa letra, intenta con una diferente.")
                     continue  # Vuelve al inicio del bucle sin restar vidas
                     
-                letras_repetidas.append(letra_ingresada) 
+                letras_repetidas.append(letra_ingresada) #Añado a la lista de letras repetidas
                 adivinada += letra_ingresada
                                 
                 if letra_ingresada not in palabra: 
