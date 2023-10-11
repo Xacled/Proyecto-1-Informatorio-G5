@@ -10,30 +10,33 @@ def obtener_palabra():
 
     palabras = ["hola", "adios", "Complacer", "Coma", "Espumoso", "Mama", "Nuclear", "lugar",
                 "Pesca", "Implicar", "Optimista", "Cero", "Pezuñas", "Desvanecimiento", "Cobre", "Explicación",
-                "Retirar", "Zoom", "Innecesario", "Primer plano", "Desayuno", "Componer", "Problema", "Bovino",
-                "Arcilla", "Cualquier momento", "Seda", "Raro", "Grin", "Minuto", "Equivocado", "Probado",
+                "Retirar", "Zoom", "Innecesario", "Plano", "Desayuno", "Componer", "Problema", "Bovino",
+                "Arcilla", "Cualquier momento", "Seda", "Raro", "Primero", "Minuto", "Equivocado", "Probado",
                 "Diagonal", "Moneda", "Blanda", "Negro", "Estación", "Respaldar", "Lineal", "Examinador"]
     palabra = random.choice(palabras).lower()
     return palabra
 
-def ahorcado():
-    pass
+def vida(pal):
+    long=len(pal)
+    vida= ((long / 2)*2)
+    return vida 
 
 def juego():
-    print("Bienvenido al juego de adivinanza de palabras.")
+    print("\nBienvenido al juego de adivinanza de palabras.")
     menu()
-    op = int(input("Ingrese el modo de juego:\n-> "))
+    op = int(input("\nIngrese el modo de juego:\n-> "))
 
     if op == 1:
         palabra = obtener_palabra()
-        vidas = 6
+        vidas = int(vida(palabra))
         adivinada = ''
         letras_equivocada = []
         letras_ingresadas = []
 
         while vidas > 0:
+            os.system('cls')
             fallas = 0
-
+            print(f"Tienes {vidas} vidas")
             for letra in palabra:
                 if letra in adivinada:
                     print(letra, end="")
@@ -43,43 +46,43 @@ def juego():
 
             if fallas == 0:
                 print("\n¡Ganaste! lograste adivinar la palabra")               
-                print(f"Letras incorrectas: {', '.join(letras_equivocada)}")
+                print(f"\nLetras incorrectas: {', '.join(letras_equivocada)}")
                 break 
 
             intento = input("\nIntroduce una letra o adivina la palabra completa (ingresa 'adivinar'): ").lower()
 
             if intento == 'adivinar':
-                palabra_intentada = input("Ingresa la palabra completa: ").lower()
+                palabra_intentada = input("\nIngresa la palabra completa: ").lower()
                 
                 if palabra_intentada == palabra:
-                    print("¡Ganaste adivinando la palabra completa!")
+                    print("\n¡Ganaste adivinando la palabra completa!")
                     break    
                 else:
-                    print("Palabra incorrecta. Pierdes todas las vidas.")
+                    print("\nPalabra incorrecta. Pierdes todas las vidas.")
                     vidas = 0
                     
             
-            letra_ingresada = intento
-
-            if letra_ingresada in letras_ingresadas:
-                print("Ya has ingresado esa letra. Intenta con una diferente.")
-                continue  # Vuelve al inicio del bucle sin restar vidas
+            letra_ingresada = intento  #Le asigno el intento que seria la letra ingresada
             
+            if letra_ingresada in letras_ingresadas:  #Si la letra que ingreso es la misma que la ingresada anteriormente entonces le pide que ingrese otra
+                print("\nYa has ingresado esa letra, intenta con una diferente.")
+                continue  # Vuelve al inicio del bucle sin restar vidas
+
             letras_ingresadas.append(letra_ingresada) 
             adivinada += letra_ingresada
-            
-            if vidas == 0:
-                print(f"Perdiste. La palabra era: {palabra}")
-                print(f"Letras incorrectas: {', '.join(letras_equivocada)}")
-
+           
                 
             if letra_ingresada not in palabra: 
-                    vidas -= 1
+                    vidas -= 1 #Resto uno a la vida si la letra que ingreso no esta en la palabra tomada de la lista
                     letras_equivocada.append(letra_ingresada)   
-                    print(f"Letra incorrecta. Te quedan {vidas} vidas restantes.") 
+                    print(f"Letra equivocada . Te quedan {vidas} vidas restantes.") 
+
+            #Si la vida del jugador es  0 entonces este perdio el juego, es decir no adivno la palabra
+            if vidas == 0:
+                print(f"Perdiste!, La palabra era: {palabra}")
+                print(f"Letras equivocadas: {', '.join(letras_equivocada)}")
 
 
 juego()
 
-def vida ():
- pass
+
