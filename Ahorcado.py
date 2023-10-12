@@ -130,6 +130,7 @@ def juego():
                             break    
                         else:
                             print("\n Palabra incorrecta. Pierdes todas las vidas (╯°□°）╯︵ ┻━┻")
+                            print(f"La palabra era: {palabra}")
                             if letras_equivocada == []:
                                 print("\nNo te equivocaste en ninguna letra :D")
                             else:
