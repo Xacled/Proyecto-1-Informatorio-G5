@@ -1,25 +1,55 @@
-import random #Libreria de python que en este caso me permitira escoger una palabra random de mi lista de palabras
-import os #Libreria de python que me permitira limpiar la consola
+import random  # Libreria de python que en este caso me permitira escoger una palabra random de mi lista de palabras
+import os  # Libreria de python que me permitira limpiar la consola
 
-def menu():#Es un menu del juego donde elegiras entre jugar o salir del programa en cuestion
+
+def menu():  # Es un menu del juego donde elegiras entre jugar o salir del programa en cuestion
     print("------------------------MENU---------------------------")
-    #Para jugar solo tendras que elegir entre este menu de opcion 1 o 2, 1 para jugar
-    print("1.Jugador contra la maquina") #Se toma la palabra de un archivo aleatorio
+    # Para jugar solo tendras que elegir entre este menu de opcion 1 o 2, 1 para jugar
+    # Se toma la palabra de un archivo aleatorio
+    print("1.Jugador contra la maquina")
     print("2.Instrucciones")
     print("3.Salir")
 
-def obtener_palabra():
+
+def dificultad():
+    print("Seleccione una dificultad:")
+    print("========================")
+    print("1.Facil")
+    print("2.Medio")
+    print("3.Dificil")
+
+
+def obtener_palabra(dificultad):
 
     palabras = ["hola", "adios", "Complacer", "Coma", "Espumoso", "Mama", "Nuclear", "lugar",
                 "Pesca", "Implicar", "Optimista", "Cero", "Pezuñas", "Desvanecimiento", "Cobre", "Explicación",
                 "Retirar", "Zoom", "Innecesario", "Plano", "Desayuno", "Componer", "Problema", "Bovino",
                 "Arcilla", "Cualquier", "momento", "Seda", "Raro", "Primero", "Minuto", "Equivocado", "Probado",
                 "Diagonal", "Moneda", "Blanda", "Negro", "Estación", "Respaldar", "Lineal", "Examinador"]
-    palabra = random.choice(palabras).lower() #Utilizo el random para que sea aleatorio y choice para elegir la palabra, lower para que sea minuscula
+    # Utilizo el random para que sea aleatorio y choice para elegir la palabra, lower para que sea minuscula
+    # separo la lista de palabras por nivel
+    facil = []
+    medio = []
+    dificil = []
+    for palabra in palabras:
+        letras_difrentes = len(set(palabra))
+        if letras_difrentes <= 4:
+            facil.append(palabra)
+        elif letras_difrentes <= 8:
+            medio.append(palabra)
+        else:
+            dificil.append(palabra)
+    if dificultad == 1:
+        palabra = random.choice(facil).lower()
+    elif dificultad == 2:
+        palabra = random.choice(medio).lower()
+    else:
+        palabra = random.choice(dificil).lower()
     return palabra
 
+
 def ahorcado(cantVida):
-    #Funcion para definir el ascii del ahorcado
+    # Funcion para definir el ascii del ahorcado
     dibujo = [
         '''
           +---+
@@ -81,31 +111,51 @@ def ahorcado(cantVida):
 
     print(dibujo[cantVida])
 
+
 def juego():
-    os.system('cls') #Limpio la consola al iniciar el juego
+    # Limpio la consola al iniciar el juego
     jugar = True
-    while jugar == True:#Primer control del flujo del programa mientras jugar sea true  podra seguir adivinando palabras
-        print("-------------Este es el juego del ahorcado-------------")
+    while jugar == True:  # Primer control del flujo del programa mientras jugar sea true  podra seguir adivinando palabras
+        # corri esto aca abajo para que despues de volver a jugar limpie bien
+        os.system('cls')
+        print("-------------Bienvenido al Juego del Ahorcado!-------------")
         menu()
         op = int(input("\nIngrese la opcion a elegir:\n-> "))
-        #apartir de aqui comienza el juego, tendras que adivinar una palabra aleatoria, ingresando letra por letra o en su defecto 
-        #arriesgar la palabra si estas muy seguro de saber que palabra es , 
-        #con cada intento si es incorrecta la letra te resta una vida, si es la palabra completa perdes toda tus vidas.
-        os.system('cls')#Limpio la consola mientras mis vidas sean > 0
+        op_deseada = [1, 2, 3]  # chequeo que elija una de las 3 opciones
+        while op not in op_deseada:
+            print("opcion no valida vuelva a intentarlo")
+            op = int(input("\nIngrese la opcion a elegir otra vez:\n-> "))
+
+        #A partir de aqui comienza el juego, tendras que adivinar una palabra aleatoriamente escogida por la maquina, ingresando letra por letra
+        #o en su defecto arriesgar la palabra cuando la maquina te lo permita (te lo ofrece en cierto momento del juego), 
+        #Con cada intento incorrecto, se te resta una vida, tienes 6 intentos (vidas).
+        #Si, cuando la maquina te de la oportunidad de adivinar la palabra completa, adivinas la palabra incorrecta, pierdes todas tus vidas.
+        os.system('cls')
         if op == 1:
-            palabra = obtener_palabra()
-            vidas = 6 
-            adivinada = '' #Letras por adivinar
-            letras_equivocada = [] #Lista donde se guardaran las letras ingresadas y que son incorrectas      
-            letras_repetidas = [] #Lista donde se guardaran las letras ingresadas repetidas
-            def letras_equivocadas():#Funcion para mostrar letras equivocadas/incorrectas
+            dificultad()
+            op_dif = int(input("\nIngrese una opcion: "))
+            op_dif_deseada = [1, 2, 3]
+            while op_dif not in op_dif_deseada:
+                print("opcion no valida vuelva a intentarlo")
+                op_dif = int(input("\nIngrese una opcion valida: "))
+
+            palabra = obtener_palabra(op_dif)
+            vidas = 6
+            adivinada = ''  # Letras por adivinar
+            # Lista donde se guardaran las letras ingresadas y que son incorrectas
+            letras_equivocada = []
+            letras_repetidas = []  # Lista donde se guardaran las letras ingresadas repetidas
+
+            def letras_equivocadas():  # Funcion para mostrar letras equivocadas/incorrectas
                 if letras_equivocada == []:
                     print("\nNo te equivocaste en ninguna letra :D")
                 else:
-                    print(f"\nLetras equivocadas: {', '.join(letras_equivocada)}")
-                    
-            while vidas > 0: #Segundo while controla el flujo del programa mientras las vidas > 0 seguira jugando
-               
+                    print(
+                        f"\nLetras equivocadas: {', '.join(letras_equivocada)}")
+            mensaje = ''  # inicalizo este mensaje en vacio y lo asigno despues pq sino la limpieza de consola no lo muestra
+            while vidas > 0:  # Segundo while controla el flujo del programa mientras las vidas > 0 seguira jugando
+                os.system("clear" if os.name == "posix" else "cls")
+
                 print(f"\nTienes {vidas} vidas")
                 ahorcado(vidas)
                 letras_adivinidas = 0
@@ -114,68 +164,91 @@ def juego():
                         print(letra, end="")
                     else:
                         print("_ ", end="")
-                        letras_adivinidas +=1               
-                
-                print(f"\nQuedan {letras_adivinidas} letras")    
-                           
-                if letras_adivinidas == 0:
-                    print("\n┌(ㆆ㉨ㆆ)ʃ¡Ganaste! lograste adivinar la palabra┌(ㆆ㉨ㆆ)ʃ")               
-                    letras_equivocadas()
-                    break 
+                        letras_adivinidas += 1
 
-                if letras_adivinidas <= 2  and vidas > 0 :
-                    opc = input("\nQuiere arriesgar la palabra completa? y/n: ").lower()
+                print(f"\nQuedan {letras_adivinidas} letras")
+
+                if letras_adivinidas == 0:
+                    print("\n┌(ㆆ㉨ㆆ)ʃ¡Ganaste! Lograste adivinar la palabra┌(ㆆ㉨ㆆ)ʃ")
+                    letras_equivocadas()
+                    break
+
+                if (letras_adivinidas == 2 and vidas > 0) or vidas == 1:
+                    opc = input(
+                        "\nQuiere arriesgar la palabra completa? y/n: ").lower()
                     if opc == "y":
-                        palabra_intentada = input("\nIngresa la palabra completa: ").lower()                        
+                        palabra_intentada = input(
+                            "\nIngresa la palabra completa: ").lower()
                         if palabra_intentada == palabra:
                             print("\n┌(ㆆ㉨ㆆ)ʃ¡Ganaste!┌(ㆆ㉨ㆆ)ʃ")
-                            letras_equivocadas()  
-                            break 
+
+                            break
                         else:
-                            print("\nPalabra incorrecta. Pierdes todas las vidas (╯°□°）╯︵ ┻━┻")
+                            print(
+                                "\nPalabra incorrecta. Pierdes todas las vidas (╯°□°）╯︵ ┻━┻")
                             print(f"\nLa palabra era: {palabra}")
-                            letras_equivocadas()
-                            vidas = 0 
-                            break  
-                
+                            if len(letras_equivocada) > 0:
+                                letras_equivocadas()  # pongo esto adentro del if pq si arriesgas hasta el momento sin equivocacciones al perder muestra como que no te equivocaste
+                            vidas = 0
+                            break
+                if vidas < 6:
+                    letras_equivocadas()
+                print(mensaje)
                 letrain = input("\nIntroduce una letra: ").lower()
 
-                if len(letrain) != 1 or not letrain.isalpha(): #.isalpha debuelve true si los caracteres ingresado son letras
-                    print('\nEl caracter ingresado no es una letra o es mas de una letra,Ingrese nuevamente una letra')
+                # .isalpha debuelve true si los caracteres ingresado son letras
+                if len(letrain) != 1 or not letrain.isalpha():
+                    mensaje = '\nEl caracter ingresado no es una letra o es mas de una letra,Ingrese nuevamente una letra'
                     continue
-                               
-                letra_ingresada = letrain  #Le asigno el intento que seria la letra ingresada
-                
-                if letra_ingresada in letras_repetidas:  #Si la letra que ingreso es la misma que la ingresada anteriormente entonces le pide que ingrese otra
-                    print("\n ''⌐(ಠ۾ಠ)¬''' Ya has ingresado esa letra, intenta con una diferente.")
+
+                letra_ingresada = letrain  # Le asigno el intento que seria la letra ingresada
+
+                # Si la letra que ingreso es la misma que la ingresada anteriormente entonces le pide que ingrese otra
+                if letra_ingresada in letras_repetidas:
+                    print(
+                        "\n ''⌐(ಠ۾ಠ)¬''' Ya has ingresado esa letra, intenta con una diferente.")
                     continue  # Vuelve al inicio del bucle sin restar vidas
-                    
-                letras_repetidas.append(letra_ingresada) #Añado a la lista de letras repetidas
+
+                # Añado a la lista de letras repetidas
+                letras_repetidas.append(letra_ingresada)
                 adivinada += letra_ingresada
-                                
-                if letra_ingresada not in palabra: 
-                        vidas -= 1 #Resto uno a la vida si la letra que ingreso no esta en la palabra tomada de la lista
-                        letras_equivocada.append(letra_ingresada)   
-                        print(f"Letra equivocada . Te quedan {vidas} vidas restantes.") 
-                #Si la vida del jugador es  0 entonces este perdio el juego, es decir no adivno la palabra
-                if vidas == 0:
-                    print(f"\nPerdiste!, La palabra era: {palabra} (╯°□°）╯︵ ┻━┻")
+
+                if letra_ingresada not in palabra:
+                    vidas -= 1  # Resto uno a la vida si la letra que ingreso no esta en la palabra tomada de la lista
+                    letras_equivocada.append(letra_ingresada)
+                    print(
+                        f"Letra equivocada . Te quedan {vidas} vidas restantes.")
                     letras_equivocadas()
+                # Si la vida del jugador es  0 entonces este perdio el juego, es decir no adivno la palabra
+                if vidas == 0:
+                    os.system('cls')
+                    ahorcado(vidas)
+                    print(
+                        f"\nPerdiste!, La palabra era: {palabra} (╯°□°）╯︵ ┻━┻")
+                    if len(letras_equivocada) > 0:
+                        letras_equivocadas()
+                    # elimino esto para mostrarlo siempre letras_equivocadas()
+                # Limpio la consola mientras mis vidas sean > 0
 
             juego = input("\nDeseas jugar otra vez y/n: ").lower()
             if juego == 'n':
                 jugar = False
-                os.system('cls')#Limpio la consola mientras mis vidas sean > 0
+                # Limpio la consola mientras mis vidas sean > 0
+                os.system('cls')
                 print("---Gracias por jugar!---")
             else:
                 continue
         elif op == 2:
-            print("las instrucciones de este juego")
-            input("presione enter para volver al menu inicial.....")
+            print("Instrucciones de nuestro ahorcado:\n")
+            print("-Los niveles de dificultad se basan en la longitud de la palabra a adivinar. Fácil: cortas; Medio: intermedias; Difícil: largas.")
+            print("-Solo puedes adivinar una letra a la vez.")
+            print("-Tienes 6 vidas y quedarán intactas siempre y cuando adivines las letras correctas.")
+            print("-Puedes adivinar la palabra entera solo cuando el juego lo indique y si adivinas una palabra incorrecta pierdes la totalidad de tus vidas.\n")
+            input("Presione enter para volver al menu inicial\n->")
             os.system('cls')
         else:
             exit()
 
-juego()
 
+juego()
 
